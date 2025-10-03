@@ -1,0 +1,29 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+
+
+System_Boundary(packet_prices, "Выгрузка прайс листов") {
+    ComponentDb(price_DB, "БД Прайс листов", "PostgreSQL", "/api/bookings")
+
+Container(product_extract, "Извлечение products")
+Container(categories_extract, "Извлечение categories")
+Container(clients_extract, "Извлечение clients")
+Container(client_prices_extract, "Извлечение client_prices")
+    Rel(price_DB, product_extract, "Извлечение")
+    Rel(price_DB, categories_extract, "Извлечение")
+    Rel(price_DB, clients_extract, "Извлечение")
+    Rel(price_DB, client_prices_extract, "Извлечение")
+
+    Container(transform_data, "Преобразование данных", "Все данные собираются в один файл")
+        Rel(product_extract, transform_data,  "Извлечение")
+        Rel(categories_extract, transform_data, "Извлечение")
+        Rel(clients_extract, transform_data, "Извлечение")
+        Rel(client_prices_extract, transform_data, "Извлечение")
+
+        Container(save_data, "Сохранение в файл", "Сохрание в файл CSV и при необходимости отправка")
+        Rel(transform_data, save_data, "Извлечение")
+  }
+}
+
+@enduml
