@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.dummy import DummyOperator
+from airflow.operators.python import BranchPythonOperator
+from airflow.utils.trigger_rule import TriggerRule
 import pandas as pd
 import os
 import random
@@ -77,7 +79,7 @@ def analyze_numbers(**kwargs):
         return branch
 
     except Exception as e:
-        print(f"❌ Analysis failed: {str(e)}")
+        print(f"Analysis failed: {str(e)}")
         raise
 
 def process_high_average(**kwargs):
@@ -140,7 +142,7 @@ with DAG(
         retries=1,
     )
 
-    analyze_data = PythonOperator(
+    analyze_data = BranchPythonOperator(
         task_id='analyze_data',
         python_callable=analyze_numbers,
         retries=2,
@@ -163,6 +165,7 @@ with DAG(
         task_id='final_summary',
         python_callable=final_summary,
         retries=1,
+        trigger_rule=TriggerRule.ONE_SUCCESS,
     )
 
     end = DummyOperator(task_id='end')
