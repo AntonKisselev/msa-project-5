@@ -14,17 +14,14 @@ minikube start --driver=docker
 установка airflow, из официпльных репозиториев не сработало, скачал официальный чарт
 ```
 kubectl create namespace airflow
-helm install airflow airflow -n airflow
+
 ```
 
 проброс папки с dag
 ```
-cd dags
-kubectl create configmap airflow-dags \
-  --namespace airflow \
-  --from-file=./dags \
-  --dry-run=client -o yaml | kubectl apply -f -
-helm upgrade airflow airflow -n airflow  
+
+minikube mount ./dags:/host_dags # для minikube только
+helm install airflow airflow -n airflow
 ```
 
 проброс порта

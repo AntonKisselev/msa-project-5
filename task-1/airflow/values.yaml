@@ -20,7 +20,7 @@ airflow:
   ## - allowed values: "CeleryExecutor", "KubernetesExecutor", "CeleryKubernetesExecutor"
   ## - customize the "KubernetesExecutor" pod-template with `airflow.kubernetesPodTemplate.*`
   ##
-  executor: CeleryExecutor
+  executor: CeleryKubernetesExecutor
 
   ## the fernet encryption key (sets `AIRFLOW__CORE__FERNET_KEY`)
   ## - [WARNING] you must change this value to ensure the security of your airflow
@@ -265,13 +265,19 @@ airflow:
   ## - spec for VolumeMount:
   ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
   ##
-  extraVolumeMounts: []
+  extraVolumeMounts:
+    - name: dags-configmap
+      mountPath: /opt/airflow/dags
 
   ## extra Volumes for the airflow Pods
   ## - spec for Volume:
   ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
   ##
-  extraVolumes: []
+  extraVolumes:
+    - name: dags-configmap
+      hostPath:
+        path: /host_dags # directory location on host
+        type: Directory # this field is optional
 
   ## kubernetes cluster domain name
   ## - configured in the kubelet with `--cluster-domain` flag (deprecated):
@@ -1288,7 +1294,7 @@ triggerer:
 flower:
   ## if the airflow flower UI should be deployed
   ##
-  enabled: true
+  enabled: false
 
   ## the number of flower Pods to run
   ## - if you set this >1 we recommend defining a `flower.podDisruptionBudget`
@@ -2218,8 +2224,8 @@ redis:
   ##
   image:
     registry: docker.io
-    repository: bitnami/redis
-    tag: 6.2.14-debian-12-r17
+    repository: redis
+    tag: 7.2.4
     pullPolicy: IfNotPresent
 
   ## the redis password

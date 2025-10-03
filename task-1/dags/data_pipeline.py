@@ -9,6 +9,7 @@ import random
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
+    'start_date': datetime(2025,10,3),
     'retries': 2,
     'retry_delay': timedelta(minutes=1),
 }
@@ -20,10 +21,10 @@ def send_email_mock(context, success=True):
     else:
         print(f"EMAIL FAILED")
 
-def create_sample_csv():
+def create_sample_csv(**kwargs):
     """Создание CSV с 30 случайными числами от 0 до 100"""
     numbers = [random.randint(0, 100) for _ in range(30)]
-
+    print(f"generated numbers: {numbers}")
     df = pd.DataFrame({'numbers': numbers})
     os.makedirs('/opt/airflow/data', exist_ok=True)
     csv_path = '/opt/airflow/data/numbers.csv'
@@ -48,7 +49,7 @@ def read_csv_data(**kwargs):
         return f"Read {len(df)} numbers"
 
     except Exception as e:
-        print(f"❌ Failed to read CSV: {str(e)}")
+        print(f"Failed to read CSV: {str(e)}")
         raise
 
 def analyze_numbers(**kwargs):
@@ -133,6 +134,12 @@ with DAG(
         retry_delay=timedelta(minutes=1),
     )
 
+    create_sample_csv = PythonOperator(
+        task_id='create_csv',
+        python_callable=create_sample_csv,
+        retries=1,
+    )
+
     analyze_data = PythonOperator(
         task_id='analyze_data',
         python_callable=analyze_numbers,
@@ -161,6 +168,6 @@ with DAG(
     end = DummyOperator(task_id='end')
 
     # Workflow
-    start >> read_csv >> analyze_data
+    start >> create_sample_csv >> read_csv >> analyze_data
     analyze_data >> [high_avg_branch, low_avg_branch]
     [high_avg_branch, low_avg_branch] >> final_task >> end

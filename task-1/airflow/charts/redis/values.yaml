@@ -226,7 +226,7 @@ master:
   ##
   ## Can be used to specify command line arguments, for example:
   ##
-  command: "/run.sh"
+  command: ""
   ## Additional Redis configuration for the master nodes
   ## ref: https://redis.io/topics/config
   ##
