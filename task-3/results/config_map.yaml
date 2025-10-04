@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-exporter-config
+  namespace: default
+data:
+  DB_HOST: "postgresql-service"
+  POSTGRES_HOST: "postgresql"
+  DB_PORT: "5432"
+  DB_NAME: "postgres"
+  DB_USER: "exporter"
+  DB_PASSWORD: "pass111rd"
+  EXPORT_PATH: "/data/exports"
+  POSTGRES_PASSWORD: "12345678"
