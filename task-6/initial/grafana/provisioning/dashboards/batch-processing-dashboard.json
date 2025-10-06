@@ -1,0 +1,80 @@
+{
+  "id": null,
+  "uid": "spring-batch-job-metrics",
+  "title": "Spring Batch Job Metrics",
+  "timezone": "browser",
+  "schemaVersion": 37,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Job Duration (seconds)",
+      "targets": [
+        {
+          "expr": "spring_batch_job_duration_seconds",
+          "legendFormat": "{{job}} - {{status}}",
+          "interval": ""
+        }
+      ],
+      "id": 1,
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+    },
+    {
+      "type": "stat",
+      "title": "Processed Records (Total)",
+      "targets": [
+        {
+          "expr": "spring_batch_processed_total",
+          "legendFormat": "{{job}} - {{status}}"
+        }
+      ],
+      "id": 2,
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 8 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "orientation": "vertical",
+        "textMode": "value"
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Successful Jobs",
+      "targets": [
+        {
+          "expr": "spring_batch_job_success_total"
+        }
+      ],
+      "id": 3,
+      "gridPos": { "x": 0, "y": 8, "w": 9, "h": 6 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "horizontal",
+        "textMode": "value"
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Failed Jobs",
+      "targets": [
+        {
+          "expr": "spring_batch_job_failure_total"
+        }
+      ],
+      "id": 4,
+      "gridPos": { "x": 9, "y": 8, "w": 9, "h": 6 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "horizontal",
+        "textMode": "value"
+      }
+    }
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  }
+}
