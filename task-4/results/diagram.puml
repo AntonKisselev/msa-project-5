@@ -1,0 +1,43 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(erp_user, "Пользователь ERP")
+
+ComponentDb(DB_sprav, "БД справочных данных", "PostgreSQL")
+ComponentDb(DB_nomen, "БД номенклатуры", "PostgreSQL")
+ComponentDb(DB_GCS, "Файловое хранилище", "GCS")
+
+System_Boundary(packet_prices, "Выгрузка прайс листов") {
+    Container(csv_storage, "Хранилище CSV Файлов")
+
+    Container_Boundary(csv_conveer, "Конвеер обработки CSV"){
+        Container(validate, "Валидация данных")
+        Rel(validate, csv_storage, "Забирает пакет для обработки")
+        Container(upload_GCS, "Загрузка в GCS")
+        Rel(upload_GCS, DB_GCS, "Загружает пакет")
+        Rel(validate, upload_GCS, "")
+        Container(proceed_data, "Обработка данных")
+        Rel(upload_GCS, proceed_data, "")
+        Container(db_update, "Загрузка данных в БД")
+        Rel(proceed_data, db_update, "")
+        Rel(db_update, DB_sprav, "Загрузка")
+        Rel(db_update, DB_nomen, "Загрузка")
+    }
+
+    Container(notify, "Система уведомлений")
+    Rel(validate, notify, "Если ошибка, уведомить пользователя")
+    Rel(notify, erp_user, "Уведомить")
+
+    Container(job_manager, "Система запуска конвеера Spring Batch", "Запускается по распиcанию, либо по наступлению события")
+    Rel(job_manager, csv_conveer, "Запускает пакет для обработки")
+
+
+}
+
+
+
+Rel(erp_user, csv_storage, "Загружает CSV")
+
+@enduml
