@@ -1,33 +1,43 @@
 plugins {
-	id 'org.springframework.boot' version '3.5.3'
-	id 'java'
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.5'
+    id 'java'
 }
-
-apply plugin: 'io.spring.dependency-management'
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-batch'
-//	runtimeOnly 'org.hsqldb:hsqldb'
-	implementation("org.postgresql:postgresql:42.2.5")
+    // === Spring Batch + JDBC ===
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.postgresql:postgresql:42.7.4'
 
-	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
-	implementation "net.logstash.logback:logstash-logback-encoder:8.1"
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+    // === Actuator + Prometheus Micrometer ===
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.batch:spring-batch-test'
+    // === Tracing (optional) ===
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+
+    // === Logback JSON encoder для отправки логов в ELK ===
+    implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
+
+    implementation 'io.prometheus:simpleclient:0.16.0'
+    implementation 'io.prometheus:simpleclient_pushgateway:0.16.0'
+
+
+
+    // === Тесты ===
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.batch:spring-batch-test'
 }
 
 test {
-	useJUnitPlatform()
-
+    useJUnitPlatform()
 }

@@ -11,6 +11,8 @@ services:
       - POSTGRES_DB=$POSTGRESDB_DATABASE
     ports:
       - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
+    volumes:
+      - ./src/main/resources/schema-all.sql:/docker-entrypoint-initdb.d/schema-all.sql
 
   elasticsearch:
     image: 'docker.elastic.co/elasticsearch/elasticsearch:7.17.28'
@@ -90,13 +92,25 @@ services:
     healthcheck:
       test: [ "CMD", "nc", "-z", "localhost", "3000" ]
 
+  pushgateway:
+    image: prom/pushgateway
+    ports:
+      - "9091:9091"
+
   app:
     depends_on:
       - postgresdb
-      - filebeat1
+#      - filebeat1
       - grafana
     image: batch-processing
     build:
       context: .
       dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
     restart: no
+    volumes:
+      - app-logs:/var/log/batch-app
+
+volumes:
+  app-logs:
