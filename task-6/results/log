@@ -1,0 +1,200 @@
+time="2025-10-07T00:23:14+03:00" level=info msg="job started successfully" latency=240.083385ms method=POST response="Job started successfully at 2025-10-06T21:23:14.687904145Z" spanId=1cc9eb3588ae893a status=200 traceId=168e0a1596dd173789d9e249013afe7b uri="http://localhost:8080/api/run-job"
+{
+	"Name": "HTTP POST",
+	"SpanContext": {
+		"TraceID": "168e0a1596dd173789d9e249013afe7b",
+		"SpanID": "44f2f3ea5b84831e",
+		"TraceFlags": "01",
+		"TraceState": "",
+		"Remote": false
+	},
+	"Parent": {
+		"TraceID": "168e0a1596dd173789d9e249013afe7b",
+		"SpanID": "1cc9eb3588ae893a",
+		"TraceFlags": "01",
+		"TraceState": "",
+		"Remote": false
+	},
+	"SpanKind": 3,
+	"StartTime": "2025-10-07T00:23:14.463152364+03:00",
+	"EndTime": "2025-10-07T00:23:14.702875678+03:00",
+	"Attributes": [
+		{
+			"Key": "http.request.method",
+			"Value": {
+				"Type": "STRING",
+				"Value": "POST"
+			}
+		},
+		{
+			"Key": "url.full",
+			"Value": {
+				"Type": "STRING",
+				"Value": "http://localhost:8080/api/run-job"
+			}
+		},
+		{
+			"Key": "server.address",
+			"Value": {
+				"Type": "STRING",
+				"Value": "localhost"
+			}
+		},
+		{
+			"Key": "server.port",
+			"Value": {
+				"Type": "INT64",
+				"Value": 8080
+			}
+		},
+		{
+			"Key": "network.protocol.version",
+			"Value": {
+				"Type": "STRING",
+				"Value": "1.1"
+			}
+		},
+		{
+			"Key": "http.response.status_code",
+			"Value": {
+				"Type": "INT64",
+				"Value": 200
+			}
+		}
+	],
+	"Events": null,
+	"Links": null,
+	"Status": {
+		"Code": "Unset",
+		"Description": ""
+	},
+	"DroppedAttributes": 0,
+	"DroppedEvents": 0,
+	"DroppedLinks": 0,
+	"ChildSpanCount": 0,
+	"Resource": [
+		{
+			"Key": "service.name",
+			"Value": {
+				"Type": "STRING",
+				"Value": "batch-run-client"
+			}
+		},
+		{
+			"Key": "telemetry.sdk.language",
+			"Value": {
+				"Type": "STRING",
+				"Value": "go"
+			}
+		},
+		{
+			"Key": "telemetry.sdk.name",
+			"Value": {
+				"Type": "STRING",
+				"Value": "opentelemetry"
+			}
+		},
+		{
+			"Key": "telemetry.sdk.version",
+			"Value": {
+				"Type": "STRING",
+				"Value": "1.38.0"
+			}
+		}
+	],
+	"InstrumentationScope": {
+		"Name": "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
+		"Version": "0.63.0",
+		"SchemaURL": "",
+		"Attributes": null
+	},
+	"InstrumentationLibrary": {
+		"Name": "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
+		"Version": "0.63.0",
+		"SchemaURL": "",
+		"Attributes": null
+	}
+}
+{
+	"Name": "runJob",
+	"SpanContext": {
+		"TraceID": "168e0a1596dd173789d9e249013afe7b",
+		"SpanID": "1cc9eb3588ae893a",
+		"TraceFlags": "01",
+		"TraceState": "",
+		"Remote": false
+	},
+	"Parent": {
+		"TraceID": "00000000000000000000000000000000",
+		"SpanID": "0000000000000000",
+		"TraceFlags": "00",
+		"TraceState": "",
+		"Remote": false
+	},
+	"SpanKind": 1,
+	"StartTime": "2025-10-07T00:23:14.462732684+03:00",
+	"EndTime": "2025-10-07T00:23:14.702993602+03:00",
+	"Attributes": [
+		{
+			"Key": "http.target",
+			"Value": {
+				"Type": "STRING",
+				"Value": "http://localhost:8080/api/run-job"
+			}
+		}
+	],
+	"Events": null,
+	"Links": null,
+	"Status": {
+		"Code": "Ok",
+		"Description": ""
+	},
+	"DroppedAttributes": 0,
+	"DroppedEvents": 0,
+	"DroppedLinks": 0,
+	"ChildSpanCount": 1,
+	"Resource": [
+		{
+			"Key": "service.name",
+			"Value": {
+				"Type": "STRING",
+				"Value": "batch-run-client"
+			}
+		},
+		{
+			"Key": "telemetry.sdk.language",
+			"Value": {
+				"Type": "STRING",
+				"Value": "go"
+			}
+		},
+		{
+			"Key": "telemetry.sdk.name",
+			"Value": {
+				"Type": "STRING",
+				"Value": "opentelemetry"
+			}
+		},
+		{
+			"Key": "telemetry.sdk.version",
+			"Value": {
+				"Type": "STRING",
+				"Value": "1.38.0"
+			}
+		}
+	],
+	"InstrumentationScope": {
+		"Name": "batch-client",
+		"Version": "",
+		"SchemaURL": "",
+		"Attributes": null
+	},
+	"InstrumentationLibrary": {
+		"Name": "batch-client",
+		"Version": "",
+		"SchemaURL": "",
+		"Attributes": null
+	}
+}
+
+Process finished with the exit code 0

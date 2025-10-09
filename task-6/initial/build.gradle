@@ -1,0 +1,44 @@
+plugins {
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.5'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // === Spring Batch + JDBC ===
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.postgresql:postgresql:42.7.4'
+
+    // === Actuator + Prometheus Micrometer ===
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+    // === Tracing (optional) ===
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+
+    // === Logback JSON encoder для отправки логов в ELK ===
+    implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
+
+    implementation 'io.prometheus:simpleclient:0.16.0'
+    implementation 'io.prometheus:simpleclient_pushgateway:0.16.0'
+
+
+
+    // === Тесты ===
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.batch:spring-batch-test'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: daily-data-export
+  namespace: default
+spec:
+  schedule: "* * * * *"
+  startingDeadlineSeconds: 600
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: data-exporter
+              image: cron_cargo:latest
+              imagePullPolicy: IfNotPresent
+              command:
+                - "/bin/sh"
+                - "-c"
+                - |
+                  echo "Начало экспорта данных в $(date)"
+                  python exporter.py shipments 
+                  echo "Экспорт завершен в $(date)"
+              env:
+                - name: DB_HOST
+                  valueFrom:
+                    configMapKeyRef:
+                      name: db-exporter-config
+                      key: DB_HOST
+                - name: DB_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: db-exporter-config
+                      key: DB_PORT
+                - name: DB_NAME
+                  valueFrom:
+                    configMapKeyRef:
+                      name: db-exporter-config
+                      key: DB_NAME
+                - name: EXPORT_PATH
+                  valueFrom:
+                    configMapKeyRef:
+                      name: db-exporter-config
+                      key: EXPORT_PATH
+                - name: DB_USER
+                  valueFrom:
+                    configMapKeyRef:
+                      name: db-exporter-config
+                      key: DB_USER
+                - name: DB_PASSWORD
+                  valueFrom:
+                    configMapKeyRef:
+                      name: db-exporter-config
+                      key: DB_PASSWORD
+              volumeMounts:
+                - name: export-data
+                  mountPath: /data/exports
+          volumes:
+            - name: export-data
+              persistentVolumeClaim:
+                claimName: export-data-pvc

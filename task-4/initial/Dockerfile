@@ -1,5 +1,6 @@
 FROM openjdk:24-slim
 # 8080
-WORKDIR .
+WORKDIR /tmp
 COPY build/libs/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY src/main/resources/* *
+ENTRYPOINT ["java","-jar","/tmp/app.jar"]

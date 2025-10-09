@@ -11,6 +11,8 @@ services:
       - POSTGRES_DB=$POSTGRESDB_DATABASE
     ports:
       - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
+    volumes:
+      - ./src/main/resources/schema-all.sql:/docker-entrypoint-initdb.d/schema-all.sql
 
   app:
     depends_on:
